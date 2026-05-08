@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>石头山堤坝总图</title>
+  <style>
+    :root {
+      --bg: #f5efe6;
+      --bg-2: #efe2d0;
+      --panel: rgba(255, 250, 242, 0.84);
+      --panel-strong: rgba(255, 255, 255, 0.92);
+      --ink: #1f1a17;
+      --muted: #6f645d;
+      --line: rgba(60, 44, 34, 0.12);
+      --stone: #8b5e34;
+      --stone-soft: rgba(139, 94, 52, 0.12);
+      --mountain: #2f6f59;
+      --mountain-soft: rgba(47, 111, 89, 0.12);
+      --dam: #446d9c;
+      --dam-soft: rgba(68, 109, 156, 0.12);
+      --candidate: #b86a3a;
+      --candidate-soft: rgba(184, 106, 58, 0.12);
+      --shadow: 0 18px 50px rgba(72, 49, 30, 0.12);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.65), transparent 30%),
+        radial-gradient(circle at top right, rgba(216,180,140,0.26), transparent 26%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1460px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .panel, .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-main {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: "Songti SC", "STSong", serif;
+      font-size: clamp(36px, 5vw, 68px);
+      line-height: 0.95;
+    }
+
+    .summary {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.85;
+      max-width: 780px;
+    }
+
+    .hero-summary-card {
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(249,241,231,0.86));
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 34px rgba(72, 49, 30, 0.08);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.8);
+      color: var(--muted);
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric, .side-card, .detail-block, .path-box, .card, .intro-block, .experience-card, .jump-card {
+      border-radius: 18px;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+    }
+
+    .metric, .side-card, .path-box, .jump-card { padding: 16px; }
+
+    .metric .num { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+
+    .metric .label,
+    .section-intro,
+    .path-box p,
+    .side-card p,
+    .footer-note,
+    .model-text,
+    .intro-block p {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .model-intro {
+      margin: 18px 0;
+      padding: 22px;
+    }
+
+    .model-intro h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      font-family: "Songti SC", "STSong", serif;
+    }
+
+    .intro-lead {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.9;
+      color: #2b221c;
+    }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr 0.95fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .model-wide {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .intro-block {
+      padding: 18px;
+    }
+
+    .intro-block h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .intro-points {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .intro-points li + li {
+      margin-top: 8px;
+    }
+
+    .stacked-copy {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stacked-copy p {
+      margin: 0;
+      white-space: pre-line;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .search {
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      font-size: 15px;
+      width: 100%;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      color: #fff;
+      background: #2f251f;
+      border-color: #2f251f;
+    }
+
+    .sections {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .story-grid,
+    .jump-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .jump-grid {
+      margin-bottom: 18px;
+    }
+
+    .jump-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .jump-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .story-grid {
+      grid-template-columns: 0.86fr 1.14fr;
+      margin-top: 18px;
+      margin-bottom: 18px;
+      align-items: start;
+    }
+
+    .story-panel {
+      padding: 18px;
+    }
+
+    .story-panel h3,
+    .selection-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: rgba(95, 74, 57, 0.18);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 34px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 15px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #fff;
+      border: 2px solid rgba(95, 74, 57, 0.28);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .timeline-item.active::before {
+      background: #2f251f;
+      border-color: #2f251f;
+      transform: scale(1.08);
+    }
+
+    .timeline-button {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      border-radius: 16px;
+      padding: 14px 15px;
+      cursor: pointer;
+      color: inherit;
+      appearance: none;
+    }
+
+    .timeline-button strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .timeline-button span {
+      display: block;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .timeline-item.active .timeline-button {
+      border-color: rgba(47, 37, 31, 0.3);
+      box-shadow: 0 10px 26px rgba(72, 49, 30, 0.08);
+      background: rgba(255,255,255,0.98);
+    }
+
+    .selection-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      min-height: 420px;
+    }
+
+    .selection-card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .selection-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .ghost-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.84);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .loading-card {
+      padding: 22px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,0.82);
+      border: 1px dashed rgba(63, 47, 34, 0.18);
+      border-radius: 18px;
+    }
+
+    .jump-link,
+    .mini-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .mini-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .mini-tag.accent {
+      background: rgba(47, 37, 31, 0.08);
+      color: #2f251f;
+    }
+
+    .section {
+      padding: 22px;
+    }
+
+    .section-badge, .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.8);
+    }
+
+    .section h2 {
+      margin: 10px 0 8px;
+      font-size: 28px;
+      font-family: "Songti SC", "STSong", serif;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .card { padding: 18px; }
+    .tag.stone { background: var(--stone-soft); color: var(--stone); }
+    .tag.mountain { background: var(--mountain-soft); color: var(--mountain); }
+    .tag.dam { background: var(--dam-soft); color: var(--dam); }
+    .tag.candidate { background: var(--candidate-soft); color: var(--candidate); }
+
+    .card.active-match {
+      border-color: rgba(47, 37, 31, 0.24);
+      box-shadow: 0 14px 32px rgba(72, 49, 30, 0.12);
+    }
+
+    .match-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+
+    .card h3 {
+      margin: 10px 0 0;
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .lede {
+      margin: 0 0 14px;
+      line-height: 1.8;
+      font-size: 15px;
+      color: #2a211b;
+    }
+
+    details {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .detail-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .detail-block { padding: 12px; }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .detail-block p,
+    .detail-block ul {
+      margin: 0;
+      line-height: 1.8;
+      font-size: 14px;
+      color: #2e2721;
+      white-space: pre-line;
+    }
+
+    .detail-block ul {
+      padding-left: 18px;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px dashed rgba(63, 47, 34, 0.18);
+      background: rgba(255,255,255,0.6);
+      font-size: 14px;
+    }
+
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    @media (max-width: 1120px) {
+      .hero,
+      .model-grid,
+      .model-wide,
+      .cards,
+      .story-grid,
+      .jump-grid,
+      .toolbar,
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="panel hero-main">
+        <div class="eyebrow">石头 / 山 / 堤坝 · 曹爽人生3万天</div>
+        <h1>你现在已经长出来的自己</h1>
+        <div class="hero-summary-card">
+          <p class="summary" id="heroSummary"></p>
+        </div>
+        <div class="hero-meta">
+          <span class="hero-pill">结构总览</span>
+          <span class="hero-pill">经历联动</span>
+          <span class="hero-pill">动态更新</span>
+        </div>
+      </div>
+      <aside class="panel hero-side">
+        <div class="metric-grid">
+          <div class="metric"><div class="num" id="metricStones">0</div><div class="label">已稳定石头</div></div>
+          <div class="metric"><div class="num" id="metricMountains">0</div><div class="label">山 / 山方向</div></div>
+          <div class="metric"><div class="num" id="metricDams">0</div><div class="label">堤坝 / 堤坝方向</div></div>
+          <div class="metric"><div class="num" id="metricCandidates">0</div><div class="label">候选项总数</div></div>
+        </div>
+        <div class="path-box">
+          <h2>怎么读这页</h2>
+          <p>先看下面的人生模型介绍，再按石头、山、堤坝和候选区块往下读。每张卡片都可以下拉展开，看更细的来源、形成方式和当前作用。</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel model-intro">
+      <h2>关于你的人生模型</h2>
+      <p class="intro-lead" id="introLead"></p>
+      <div class="model-wide">
+        <div class="intro-block">
+          <h3>它是怎么长出来的</h3>
+          <p class="model-text" id="formationText"></p>
+        </div>
+        <div class="intro-block">
+          <h3>三者之间的关系</h3>
+          <ul class="intro-points" id="relationshipPoints"></ul>
+        </div>
+      </div>
+      <div class="model-grid">
+        <div class="intro-block">
+          <h3>石头</h3>
+          <div class="stacked-copy" id="stoneDefinition"></div>
+        </div>
+        <div class="intro-block">
+          <h3>山</h3>
+          <div class="stacked-copy" id="mountainDefinition"></div>
+        </div>
+        <div class="intro-block">
+          <h3>堤坝</h3>
+          <div class="stacked-copy" id="damDefinition"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <input id="search" class="search" type="search" placeholder="搜索石头、山、堤坝、经历、来源..." />
+      <div class="filters" id="filters"></div>
+    </div>
+
+    <div class="jump-grid">
+      <div class="jump-card">
+        <h3>从结构看你自己</h3>
+        <div class="jump-links">
+          <a class="jump-link" href="#section-stones">已稳定石头</a>
+          <a class="jump-link" href="#section-mountains">山 / 山方向</a>
+          <a class="jump-link" href="#section-dams">堤坝 / 堤坝方向</a>
+          <a class="jump-link" href="#section-stoneCandidates">候选石头</a>
+          <a class="jump-link" href="#section-mountainCandidates">候选山</a>
+          <a class="jump-link" href="#section-damCandidates">候选堤坝</a>
+        </div>
+      </div>
+      <div class="jump-card">
+        <h3>从经历反推结构</h3>
+        <p class="section-intro">如果你想先看“哪段经历沉淀了什么”，直接往下看关键经历索引。它把低谷、徒步、骑行、海边、高铁、深聊这些节点和石头 / 山 / 堤坝挂在一起。</p>
+      </div>
+    </div>
+
+    <div class="sections" id="sections"></div>
+
+    <section class="story-grid" id="experience-index">
+      <div class="panel story-panel">
+        <div class="section-badge">关键经历索引</div>
+        <h2>哪些经历，沉淀了什么</h2>
+        <p class="section-intro">每一个节点都对应真实沉淀。点左边任意一段经历，下面的石头、山、堤坝与候选卡片会自动只保留相关内容。</p>
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div class="panel story-panel">
+        <div class="selection-card" id="selectionCard"></div>
+      </div>
+    </section>
+
+    <div class="bottom-grid">
+      <aside class="panel hero-side">
+        <div class="side-card">
+          <h3>你的形成方式</h3>
+          <div class="stacked-copy" id="formationCard"></div>
+        </div>
+      </aside>
+      <aside class="panel hero-side">
+        <div class="side-card">
+          <h3>理论坐标</h3>
+          <div class="detail-grid" id="theoryCards"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer-note">
+      微信新输入桥位置：<code>.codex-project/inbox/wechat-transfer/incoming/</code>。
+      你可以把从微信文件传输助手拿到的新文字或文件先放到这里，再由本地处理脚本接住。
+    </div>
+  </div>
+
+  <script>
+    const sectionsEl = document.getElementById("sections");
+    const searchEl = document.getElementById("search");
+    const filtersEl = document.getElementById("filters");
+    const timelineEl = document.getElementById("timeline");
+    const selectionCardEl = document.getElementById("selectionCard");
+    const heroSummaryEl = document.getElementById("heroSummary");
+    const introLeadEl = document.getElementById("introLead");
+    const formationTextEl = document.getElementById("formationText");
+    const relationshipPointsEl = document.getElementById("relationshipPoints");
+    const stoneDefinitionEl = document.getElementById("stoneDefinition");
+    const mountainDefinitionEl = document.getElementById("mountainDefinition");
+    const damDefinitionEl = document.getElementById("damDefinition");
+    const formationCardEl = document.getElementById("formationCard");
+    const theoryCardsEl = document.getElementById("theoryCards");
+    const metricStonesEl = document.getElementById("metricStones");
+    const metricMountainsEl = document.getElementById("metricMountains");
+    const metricDamsEl = document.getElementById("metricDams");
+    const metricCandidatesEl = document.getElementById("metricCandidates");
+    const filterDefs = [
+      ["all", "全部"],
+      ["stones", "石头"],
+      ["mountains", "山"],
+      ["dams", "堤坝"],
+      ["stoneCandidates", "候选石头"],
+      ["mountainCandidates", "候选山"],
+      ["damCandidates", "候选堤坝"]
+    ];
+    let activeFilter = "all";
+    let activeExperience = null;
+    let lifeMap = null;
+    let data = [];
+    let experiences = [];
+
+    filtersEl.innerHTML = filterDefs
+      .map(([key, label], index) => `<button class="chip ${index === 0 ? "active" : ""}" data-filter="${key}">${label}</button>`)
+      .join("");
+
+    function normalizeDetails(item) {
+      const details = {};
+      (item.details || []).forEach((block) => {
+        if (block.label.includes("当前判断")) details.status = block.text;
+        else if (block.label.includes("来源")) details.source = block.text;
+        else if (block.label.includes("怎么形成")) details.formation = block.text;
+        else if (block.label.includes("为什么")) details.why = block.text;
+        else if (block.label.includes("支撑") || block.label.includes("后续")) details.support = block.text;
+      });
+      return {
+        ...item,
+        details: {
+          status: details.status || "",
+          source: details.source || "",
+          formation: details.formation || "",
+          why: details.why || "",
+          support: details.support || "",
+        },
+        rawDetails: item.details || [],
+      };
+    }
+
+    function renderParagraphGroup(el, paragraphs) {
+      el.innerHTML = (paragraphs || [])
+        .filter(Boolean)
+        .map((text) => `<p>${text}</p>`)
+        .join("");
+    }
+
+    function populateMeta(meta) {
+      heroSummaryEl.textContent = meta.heroSummary || "";
+      introLeadEl.textContent = meta.introLead || "";
+      formationTextEl.innerHTML = (meta.formationParagraphs || [])
+        .map((text) => `<p>${text}</p>`)
+        .join("");
+      relationshipPointsEl.innerHTML = (meta.relationshipPoints || [])
+        .map((item) => `<li>${item}</li>`)
+        .join("");
+      renderParagraphGroup(stoneDefinitionEl, meta.definitionCards?.stone || []);
+      renderParagraphGroup(mountainDefinitionEl, meta.definitionCards?.mountain || []);
+      renderParagraphGroup(damDefinitionEl, meta.definitionCards?.dam || []);
+      renderParagraphGroup(formationCardEl, meta.formationCardParagraphs || []);
+      theoryCardsEl.innerHTML = (meta.theoryCards || [])
+        .map((item) => `
+          <div class="detail-block">
+            <span class="detail-label">${item.label}</span>
+            <p>${item.text}</p>
+          </div>
+        `)
+        .join("");
+    }
+
+    function populateMetrics() {
+      const findSection = (key) => data.find((section) => section.key === key);
+      const count = (key) => findSection(key)?.items?.length || 0;
+      metricStonesEl.textContent = count("stones");
+      metricMountainsEl.textContent = count("mountains");
+      metricDamsEl.textContent = count("dams");
+      metricCandidatesEl.textContent =
+        count("stoneCandidates") + count("mountainCandidates") + count("damCandidates");
+    }
+
+    function itemMatchesExperience(item) {
+      if (!activeExperience) return true;
+      return Array.isArray(item.links) && item.links.includes(activeExperience);
+    }
+
+    function render() {
+      const q = searchEl.value.trim().toLowerCase();
+      sectionsEl.innerHTML = data
+        .filter((section) => activeFilter === "all" || section.key === activeFilter)
+        .map((section) => {
+          const cards = section.items
+            .filter((item) => JSON.stringify(item).toLowerCase().includes(q))
+            .filter((item) => itemMatchesExperience(item))
+            .map((item) => `
+              <article class="card ${activeExperience ? "active-match" : ""}">
+                <div class="tag ${section.tone}">${section.title}</div>
+                <h3>${item.title}</h3>
+                <p class="lede">${item.summary}</p>
+                ${activeExperience ? `
+                  <div class="match-tags">
+                    ${(item.links || []).map((linkId) => {
+                      const related = experiences.find((exp) => exp.id === linkId);
+                      return related ? `<span class="mini-tag ${linkId === activeExperience ? "accent" : ""}">${related.title}</span>` : "";
+                    }).join("")}
+                  </div>
+                ` : ""}
+                <details>
+                  <summary>展开详细说明</summary>
+                  <div class="detail-grid">
+                    ${(item.rawDetails || []).map((block) => `
+                      <div class="detail-block">
+                        <span class="detail-label">${block.label}</span>
+                        <p>${block.text}</p>
+                      </div>
+                    `).join("")}
+                  </div>
+                </details>
+              </article>
+            `)
+            .join("");
+
+          if (!cards) return "";
+
+          return `
+            <section class="section" id="section-${section.key}">
+              <div class="section-badge">${section.items.length} 项</div>
+              <h2>${section.title}</h2>
+              <p class="section-intro">${section.intro}</p>
+              <div class="cards">${cards}</div>
+            </section>
+          `;
+        })
+        .join("");
+
+      if (!sectionsEl.innerHTML.trim()) {
+        sectionsEl.innerHTML = `<div class="loading-card">当前筛选条件下没有匹配内容。</div>`;
+      }
+    }
+
+    function renderTimeline() {
+      timelineEl.innerHTML = experiences
+        .map((item) => `
+          <div class="timeline-item ${activeExperience === item.id ? "active" : ""}">
+            <button class="timeline-button" type="button" data-experience="${item.id}">
+              <strong>${item.title}</strong>
+              <span>${item.summary}</span>
+            </button>
+          </div>
+        `)
+        .join("");
+    }
+
+    function renderSelectionCard() {
+      if (!activeExperience) {
+        selectionCardEl.innerHTML = `
+          <div class="section-badge">当前视图</div>
+          <h3>全部结构总览</h3>
+          <p>现在你看到的是完整地图。左边点一段经历，这页会切成“从那段经历出发”的视角，只保留和它相关的石头、山、堤坝与候选项。</p>
+          <div class="mini-tags">
+            <span class="mini-tag">适合先全看一遍</span>
+            <span class="mini-tag">再按经历钻进去</span>
+          </div>
+          <p>这会比单纯看概念更有用，因为你能直接判断：哪些结构是真的从生活里长出来的，哪些还只是形成中。</p>
+        `;
+        return;
+      }
+
+      const current = experiences.find((item) => item.id === activeExperience);
+      selectionCardEl.innerHTML = `
+        <div class="section-badge">当前视图</div>
+        <h3>${current.title}</h3>
+        <p>${current.summary}</p>
+        <div class="mini-tags">
+          ${current.tags.map((tag) => `<span class="mini-tag accent">${tag}</span>`).join("")}
+        </div>
+        <p>${current.detail}</p>
+        <div class="selection-actions">
+          <button class="ghost-btn" type="button" id="clearExperience">回到全部结构</button>
+          <a class="jump-link" href="#section-stones">直接看关联卡片</a>
+        </div>
+      `;
+
+      const clearBtn = document.getElementById("clearExperience");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          activeExperience = null;
+          refreshView();
+        });
+      }
+    }
+
+    function refreshView() {
+      renderTimeline();
+      renderSelectionCard();
+      render();
+    }
+
+    async function loadLifeMap() {
+      let response;
+
+      try {
+        response = await fetch("/api/life-map", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`api status ${response.status}`);
+        }
+      } catch (_error) {
+        response = await fetch("./life-map-data.json", { cache: "no-store" });
+      }
+
+      if (!response.ok) {
+        throw new Error(`life map load failed: ${response.status}`);
+      }
+
+      lifeMap = await response.json();
+      data = (lifeMap.sections || []).map((section) => ({
+        ...section,
+        items: (section.items || []).map(normalizeDetails),
+      }));
+      experiences = lifeMap.experiences || [];
+      populateMeta(lifeMap.meta || {});
+      populateMetrics();
+    }
+
+    filtersEl.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-filter]");
+      if (!btn) return;
+      activeFilter = btn.dataset.filter;
+      [...filtersEl.querySelectorAll(".chip")].forEach((chip) => {
+        chip.classList.toggle("active", chip === btn);
+      });
+      refreshView();
+    });
+
+    timelineEl.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-experience]");
+      if (!btn) return;
+      const top = window.scrollY;
+      activeExperience = btn.dataset.experience;
+      refreshView();
+      window.scrollTo({ top, behavior: "auto" });
+    });
+
+    searchEl.addEventListener("input", refreshView);
+
+    async function init() {
+      sectionsEl.innerHTML = `<div class="loading-card">正在加载石头 / 山 / 堤坝总图数据...</div>`;
+      timelineEl.innerHTML = `<div class="loading-card">正在加载关键经历索引...</div>`;
+      selectionCardEl.innerHTML = `<div class="loading-card">正在准备联动视图...</div>`;
+
+      try {
+        await loadLifeMap();
+        refreshView();
+      } catch (error) {
+        const message = error?.message || "加载失败";
+        sectionsEl.innerHTML = `<div class="loading-card">页面数据加载失败：${message}</div>`;
+        timelineEl.innerHTML = `<div class="loading-card">关键经历索引加载失败。</div>`;
+        selectionCardEl.innerHTML = `<div class="loading-card">联动视图暂不可用。</div>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
